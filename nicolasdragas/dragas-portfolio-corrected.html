@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nicolás Dragaš Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- Drawing Canvas -->
+    <canvas id="drawingCanvas"></canvas>
+
+    <!-- Header -->
+    <header>
+        <button id="snapshotBtn" class="snapshot-btn" title="Save your work of art">💾</button>
+        <div class="logo fade-in-up">
+            <img src="images/header_1.png" alt="Dragaš Portfolio">
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text fade-in-up delay-1">
+                    <h2>HELLO THERE</h2>
+                    <p>I am a graphic designer and illustrator, residing in Valparaíso, with a strong interest in editorial design, typography, avant-garde art, cinema, and music - all of which are fundamental elements that inform my work.</p>
+                    <p>In the development of projects, I cover a wide range of creative areas, including vector illustration, logo design, collages, 3D modeling, for various commissions such as books, posters, album covers, and more, where typography plays a pivotal role.</p>
+                </div>
+                <div class="about-visual fade-in-up delay-2">
+                    <div class="image-container">
+                        <img src="images\portrait_2.png" alt="Portrait 2" class="overlap-image image-1">
+                        <img src="images\portrait_1.jpeg" alt="Portrait 1" class="overlap-image image-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Section -->
+    <section class="editorial-section">
+        <div class="container">
+            <h2 class="section-title">Editorial</h2>
+
+            <!-- Project 1 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Infografías</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2023</span>
+                    
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Colección de infografías diseñadas para la curso de Manuel Bortoletti.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/Editorial_1.png" alt="Proyecto Editorial Infografias"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/Editorial_2.png" alt="Proyecto Editorial Infografias 1"></div>
+                            <div class="gallery-item"><img src="images/Editorial_3.png" alt="Proyecto Editorial Infografias 2"></div>
+                            <div class="gallery-item"><img src="images/Editorial_4.png" alt="Proyecto Editorial Infografias 3"></div>
+                            <div class="gallery-item"><img src="images/Editorial_5.png" alt="Proyecto Editorial Infografias 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 2 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Yadrana Font Specimen</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2024</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>El Especimen de Yadrana es el proyecto final para el Taller de Tipografía, desarrollado bajo un enfoque brutalista y moderno. La propuesta se centra en la exhibición técnica y estética de la fuente a través de una diagramación funcional y de alto impacto</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images\Editorial_6.png" alt="Proyecto Editorial Yadrana Specimen"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images\Editorial_7.png" alt="Proyecto Editorial Yadrana Specimen 1"></div>
+                            <div class="gallery-item"><img src="images\Editorial_8.png" alt="Proyecto Editorial Yadrana Specimen 2"></div>
+                            <div class="gallery-item"><img src="images\Editorial_9.png" alt="Proyecto Editorial Yadrana Specimen 3"></div>
+                            <div class="gallery-item"><img src="images\Editorial_10.png" alt="Proyecto Editorial Yadrana Specimen 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 3 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Andada Visualización Infográfica</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2021</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Este proyecto consiste en la creación de una visualización basada en el reconocimiento de un territorio a través de la propia andada. En lugar de procesar datos preexistentes, la edición se construye a partir del levantamiento de las huellas de lo ausente.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images\Editorial_11.png" alt="Visualización Infográfica 1"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images\Editorial_12.png" alt="Visualización Infográfica 2"></div>
+                            <div class="gallery-item"><img src="images\Editorial_13.png" alt="Visualización Infográfica 3"></div>
+                            <div class="gallery-item"><img src="images\Editorial_14.png" alt="Visualización Infográfica 4"></div>
+                            <div class="gallery-item"><img src="images\Editorial_15.png" alt="Visualización Infográfica 5"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 4 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Cristian Moll - Recuento Gráfico de su Carrera</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2023</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>La familia Moll Ramírez encargó este proyecto de diseño en honor a la exitosa carrera profesional de Cristian Moll en el balonmano. impreso por la editorial Akemi Prints en Santiago de Chile, solo tres copias producidas.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images\Editorial_16.png" alt="Cristian Moll Recuento Gráfico Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images\Editorial_17.png" alt="Cristian Moll Recuento Gráfico 1"></div>
+                            <div class="gallery-item"><img src="images\Editorial_18.png" alt="Cristian Moll Recuento Gráfico 2"></div>
+                            <div class="gallery-item"><img src="images\Editorial_19.png" alt="Cristian Moll Recuento Gráfico 3"></div>
+                            <div class="gallery-item"><img src="images\Editorial_20.png" alt="Cristian Moll Recuento Gráfico 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 5 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Edición L'Éclipse Du Soleil en Pleine Lune</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2021</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>proyecto realizado para el Taller de la Ocasión Editorial durante el segundo semestre de 2021, el cual aplica una metodología de diseño basada en guiones para traducir la obra de George Méliès al formato impreso.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/Editorial_21.png" alt="Pleine Lune Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/Editorial_22.png" alt="Pleine Lune 1"></div>
+                            <div class="gallery-item"><img src="images/Editorial_23.png" alt="Pleine Lune 2"></div>
+                            <div class="gallery-item"><img src="images/Editorial_24.gif" alt="Pleine Lune 3"></div>
+                            <div class="gallery-item"><img src="images/Editorial_25.png" alt="Pleine Lune 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Project 6 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Nzine #1</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2024</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Este fanzine es una recopilación de ilustraciones personales diseñada bajo una estética de alto contraste en blanco y negro, pensada específicamente para los procesos de impresión en Riso o serigrafía.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/Nzine_1.png" alt="Nzine #1 Main"></div>
+                        <div class="gallery-main"><img src="images/Nzine_2.png" alt="Nzine #1 Secondary"></div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Fonts Section -->
+    <section class="fonts-section">
+        <div class="container">
+            <h2 class="section-title">Fonts</h2>
+            <div class="fonts-catalogue">
+                <!-- Font 1: Brutalista -->
+                <div class="font-item fade-in-up delay-1" data-font="Brutalista" data-family="'Brutalista', serif">
+                    <div class="font-header">
+                        <h3 class="font-name">Brutalista</h3>
+                        <span class="font-category">Bold</span>
+                    </div>
+                    <div class="font-preview">
+                        <div class="font-display" style="font-family: 'Brutalista', serif; text-transform: lowercase;">Aa Bb Cc</div>
+                        <div class="font-alphabet" style="font-family: 'Brutalista', serif; text-transform: lowercase;">
+                            The quick brown fox jumps over the lazy dog
+                        </div>
+                    </div>
+                    <div class="font-weights">
+                        <span class="weight-badge">Bold</span>
+                    </div>
+                </div>
+
+                <!-- Font 2: Gyordana -->
+                <div class="font-item fade-in-up delay-2" data-font="Gyordana" data-family="'Gyordana', serif">
+                    <div class="font-header">
+                        <h3 class="font-name">Gyordana</h3>
+                        <span class="font-category">Serif</span>
+                    </div>
+                    <div class="font-preview">
+                        <div class="font-display" style="font-family: 'Gyordana', serif;">Aa Bb Cc</div>
+                        <div class="font-alphabet" style="font-family: 'Gyordana', serif;">
+                            The quick brown fox jumps over the lazy dog
+                        </div>
+                    </div>
+                    <div class="font-weights">
+                        <span class="weight-badge">Regular</span>
+                    </div>
+                </div>
+
+                <!-- Font 3: ModularInferno -->
+                <div class="font-item fade-in-up delay-3" data-font="ModularInferno" data-family="'ModularInferno', serif">
+                    <div class="font-header">
+                        <h3 class="font-name">ModularInferno</h3>
+                        <span class="font-category">Display</span>
+                    </div>
+                    <div class="font-preview">
+                        <div class="font-display" style="font-family: 'ModularInferno', serif;">Aa Bb Cc</div>
+                        <div class="font-alphabet" style="font-family: 'ModularInferno', serif;">
+                            The quick brown fox jumps over the lazy dog
+                        </div>
+                    </div>
+                    <div class="font-weights">
+                        <span class="weight-badge">Regular</span>
+                    </div>
+                </div>
+
+                <!-- Font 4: Yadrana -->
+                <div class="font-item fade-in-up delay-4" data-font="Yadrana" data-family="'Yadrana', serif">
+                    <div class="font-header">
+                        <h3 class="font-name">Yadrana</h3>
+                        <span class="font-category">Grotesk</span>
+                    </div>
+                    <div class="font-preview">
+                        <div class="font-display" style="font-family: 'Yadrana', serif;">Aa Bb Cc</div>
+                        <div class="font-alphabet" style="font-family: 'Yadrana', serif;">
+                            The quick brown fox jumps over the lazy dog
+                        </div>
+                    </div>
+                    <div class="font-weights">
+                        <span class="weight-badge">Regular</span>
+                    </div>
+                </div>
+
+                <!-- Logo -->
+                <div class="fonts-logo">
+                    <a href="https://marinacabezas.github.io/TipografiaAbierta/catalogo.html" target="_blank" rel="noopener noreferrer" aria-label="Tipografía Abierta Catalog">
+                        <img src="images/logo_tipografia_abierta_color.svg" alt="Tipografía Abierta Logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Branding & Packaging Section -->
+    <section class="branding-section">
+        <div class="container">
+            <h2 class="section-title">Branding & Packaging</h2>
+
+            <!-- Branding 1 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Holy Cookie Logo and Brand Identity</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2022</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Holy Cookie se define por una identidad visual artesanal y sofisticada, centrada en un lettering personalizado que refuerza la autenticidad del producto "hecho a mano". El diseño se apoya en una paleta de color estratégica optimizada para el packaging, logrando un alto impacto visual</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/Branding_1.png" alt="Holy Cookie Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/Branding_2.png" alt="Holy Cookie 1"></div>
+                            <div class="gallery-item"><img src="images/Branding_3.png" alt="Holy Cookie 2"></div>
+                            <div class="gallery-item"><img src="images/Branding_4.png" alt="Holy Cookie 3"></div>
+                            <div class="gallery-item"><img src="images/Branding_5.png" alt="Holy Cookie 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Poster 2 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Cultural Exhibition Campaign</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2024</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Visual identity and poster campaign for a contemporary art exhibition exploring themes of identity and transformation through minimalist design principles.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/noroot_12.png" alt="Cultural Exhibition Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/noroot_13.png" alt="Cultural Exhibition 1"></div>
+                            <div class="gallery-item"><img src="images/noroot_14.png" alt="Cultural Exhibition 2"></div>
+                            <div class="gallery-item"><img src="images/noroot_15.png" alt="Cultural Exhibition 3"></div>
+                            <div class="gallery-item"><img src="images/noroot_16.png" alt="Cultural Exhibition 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Poster 3 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Theater Season Announcement</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2022</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Dramatic poster series announcing the theater season, featuring custom typography and theatrical photography to evoke emotion and anticipation.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/noroot_17.png" alt="Theater Season Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/noroot_18.png" alt="Theater Season 1"></div>
+                            <div class="gallery-item"><img src="images/noroot_19.png" alt="Theater Season 2"></div>
+                            <div class="gallery-item"><img src="images/noroot_20.png" alt="Theater Season 3"></div>
+                            <div class="gallery-item"><img src="images/dragas_2_1.png" alt="Theater Season 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Posters -->
+    <section class="poster-section">
+        <div class="container">
+            <h2 class="section-title">Posters</h2>
+
+            <!-- Poster 1 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Artisan Coffee Roasters</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2023</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Complete brand identity and packaging design for a specialty coffee brand, emphasizing craft, sustainability, and the journey from bean to cup through earthy tones and handcrafted details.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/Recurso_34x.png" alt="Coffee Roasters Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/Recurso_34x_1.png" alt="Coffee Roasters 1"></div>
+                            <div class="gallery-item"><img src="images/Recurso_34x_2.png" alt="Coffee Roasters 2"></div>
+                            <div class="gallery-item"><img src="images/Asset_1.png" alt="Coffee Roasters 3"></div>
+                            <div class="gallery-item"><img src="images/dragas2026.jpg.jpeg" alt="Coffee Roasters 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Branding 2 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Botanical Skincare Line</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2024</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Luxury skincare brand identity featuring minimalist packaging design with botanical illustrations and refined typography, reflecting natural ingredients and premium quality.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/dragas2026.jpg_1.jpeg" alt="Botanical Skincare Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/dragas2026.jpg_2.jpeg" alt="Botanical Skincare 1"></div>
+                            <div class="gallery-item"><img src="images/tildacopy.png" alt="Botanical Skincare 2"></div>
+                            <div class="gallery-item"><img src="images/tildacopy_1.png" alt="Botanical Skincare 3"></div>
+                            <div class="gallery-item"><img src="images/1301.svg" alt="Botanical Skincare 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Branding 3 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Craft Brewery Identity</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2023</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Bold branding and label design for an independent brewery, combining traditional brewing heritage with contemporary graphic elements and playful illustrations.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/1301_1.svg" alt="Brewery Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/1302.svg" alt="Brewery 1"></div>
+                            <div class="gallery-item"><img src="images/1302_1.svg" alt="Brewery 2"></div>
+                            <div class="gallery-item"><img src="images/image5.svg" alt="Brewery 3"></div>
+                            <div class="gallery-item"><img src="images/image5_1.svg" alt="Brewery 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Branding 4 -->
+            <article class="project-item fade-in-up">
+                <div class="project-meta">
+                    <div class="project-title">
+                        <h3 class="project-name">Tech Startup Rebranding</h3>
+                        <a href="#" class="project-behance" aria-label="View on Behance">Behance</a>
+                    </div>
+                    <span class="project-date">2024</span>
+                </div>
+                <div class="project-grid">
+                    <div class="project-info">
+                        <p>Complete rebrand for a technology startup, including logo redesign, visual identity system, and application across digital and physical touchpoints with a modern, forward-thinking approach.</p>
+                    </div>
+                    <div class="project-gallery">
+                        <div class="gallery-main"><img src="images/8135a0d3-9ded-4f14-919d-4f045cbce825.webp" alt="Tech Startup Main"></div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"><img src="images/Recurso_34x_1.png" alt="Tech Startup 1"></div>
+                            <div class="gallery-item"><img src="images/dragas2026.jpg.jpeg" alt="Tech Startup 2"></div>
+                            <div class="gallery-item"><img src="images/1301.svg" alt="Tech Startup 3"></div>
+                            <div class="gallery-item"><img src="images/1302.svg" alt="Tech Startup 4"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Font Preview Modal -->
+    <div class="font-modal" id="fontModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <h2 class="modal-font-name" id="modalFontName">Font Name</h2>
+            <p class="modal-font-info">Click below to customize your preview</p>
+            
+            <div class="preview-controls">
+                <input 
+                    type="text" 
+                    class="preview-text-input" 
+                    id="previewInput" 
+                    placeholder="Type to preview the font..."
+                    value="The quick brown fox jumps over the lazy dog"
+                >
+                
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Font Size</span>
+                        <span id="fontSizeValue">48px</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        class="font-size-slider" 
+                        id="fontSizeSlider" 
+                        min="16" 
+                        max="120" 
+                        value="48"
+                    >
+                </div>
+            </div>
+
+            <div class="preview-output" id="previewOutput">
+                The quick brown fox jumps over the lazy dog
+            </div>
+
+            <div class="specimen-section">
+                <h3 class="specimen-title">Character Set</h3>
+                <div class="character-set" id="characterSet">
+                    ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+                    abcdefghijklmnopqrstuvwxyz<br>
+                    0123456789 !@#$%^&*()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <p class="contact-label">MY CONTACTS</p>
+            <div class="contact-info">
+                <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="573f323b3b38203e3924233839353b363c32173a363e3b7934383a">[email&#160;protected]</a></p>
+                <p></p>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-btn" aria-label="Facebook">f</a>
+                <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+                <a href="#" class="social-btn" aria-label="Behance">Be</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Nicolas Dragas</p>
+        <p>⛧</p>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
