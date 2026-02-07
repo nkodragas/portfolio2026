@@ -93,6 +93,99 @@ document.querySelectorAll('.gallery-item, .gallery-main').forEach(item => {
     });
 });
 
+// Gallery Modal Functionality
+const galleryModal = document.getElementById('galleryModal');
+const galleryModalClose = document.getElementById('galleryModalClose');
+const galleryModalImage = document.getElementById('galleryModalImage');
+const galleryNavPrev = document.getElementById('galleryNavPrev');
+const galleryNavNext = document.getElementById('galleryNavNext');
+const galleryCurrentImage = document.getElementById('galleryCurrentImage');
+const galleryTotalImages = document.getElementById('galleryTotalImages');
+
+let currentGalleryImages = [];
+let currentImageIndex = 0;
+
+// Open modal when clicking on gallery images
+document.querySelectorAll('.gallery-item img, .gallery-main img').forEach(img => {
+    img.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        // Get all images from the same project gallery
+        const gallery = this.closest('.project-gallery');
+        const galleryImages = Array.from(gallery.querySelectorAll('img')).map(img => img.src);
+        
+        currentGalleryImages = galleryImages;
+        currentImageIndex = galleryImages.indexOf(this.src);
+        
+        openGalleryModal();
+    });
+});
+
+function openGalleryModal() {
+    galleryModalImage.src = currentGalleryImages[currentImageIndex];
+    galleryCurrentImage.textContent = currentImageIndex + 1;
+    galleryTotalImages.textContent = currentGalleryImages.length;
+    
+    updateNavigationButtons();
+    
+    galleryModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryModal() {
+    galleryModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function updateNavigationButtons() {
+    galleryNavPrev.disabled = currentImageIndex === 0;
+    galleryNavNext.disabled = currentImageIndex === currentGalleryImages.length - 1;
+}
+
+function showPreviousImage() {
+    if (currentImageIndex > 0) {
+        currentImageIndex--;
+        galleryModalImage.src = currentGalleryImages[currentImageIndex];
+        galleryCurrentImage.textContent = currentImageIndex + 1;
+        updateNavigationButtons();
+    }
+}
+
+function showNextImage() {
+    if (currentImageIndex < currentGalleryImages.length - 1) {
+        currentImageIndex++;
+        galleryModalImage.src = currentGalleryImages[currentImageIndex];
+        galleryCurrentImage.textContent = currentImageIndex + 1;
+        updateNavigationButtons();
+    }
+}
+
+// Gallery modal controls
+galleryModalClose.addEventListener('click', closeGalleryModal);
+
+galleryNavPrev.addEventListener('click', showPreviousImage);
+galleryNavNext.addEventListener('click', showNextImage);
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+    if (!galleryModal.classList.contains('active')) return;
+    
+    if (e.key === 'Escape') {
+        closeGalleryModal();
+    } else if (e.key === 'ArrowLeft') {
+        showPreviousImage();
+    } else if (e.key === 'ArrowRight') {
+        showNextImage();
+    }
+});
+
+// Close modal when clicking outside the image
+galleryModal.addEventListener('click', function(e) {
+    if (e.target === galleryModal) {
+        closeGalleryModal();
+    }
+});
+
 // Social links interaction
 document.querySelectorAll('.social-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -134,6 +227,7 @@ window.addEventListener('scroll', () => {
 // Drawing Canvas Feature
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
+const customCursor = document.getElementById('customCursor');
 
 // Set canvas size
 function resizeCanvas() {
@@ -147,6 +241,9 @@ let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 let isScrolled = false;
+let lastAngle = 0;
+let mouseX = 0;
+let mouseY = 0;
 
 // Track scroll position
 window.addEventListener('scroll', () => {
@@ -154,6 +251,8 @@ window.addEventListener('scroll', () => {
         if (!isScrolled) {
             isScrolled = true;
             canvas.classList.add('fade-out');
+            customCursor.style.opacity = '0';
+            document.body.style.cursor = 'auto'; // Show system cursor
             // Clear canvas after fade
             setTimeout(() => {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -163,6 +262,7 @@ window.addEventListener('scroll', () => {
     } else {
         isScrolled = false;
         canvas.classList.remove('fade-out');
+        document.body.style.cursor = 'none'; // Hide system cursor
     }
 });
 
@@ -187,12 +287,27 @@ function drawDistressedLine(fromX, fromY, toX, toY) {
     }
 }
 
+// Update custom cursor position and rotation
+function updateCursor(x, y, angle) {
+    customCursor.style.left = x + 'px';
+    customCursor.style.top = y + 'px';
+    customCursor.style.transform = `rotate(${angle}rad)`;
+}
+
 // Mouse move event
 document.addEventListener('mousemove', (e) => {
-    if (isScrolled) return; // Don't draw if scrolled
-    
     const x = e.clientX;
     const y = e.clientY;
+    mouseX = x;
+    mouseY = y;
+    
+    if (isScrolled) {
+        customCursor.style.opacity = '0'; // Hide cursor while scrolling
+        return; // Don't draw if scrolled
+    }
+    
+    // Show cursor only when not scrolling
+    customCursor.style.opacity = '1';
     
     if (!isDrawing) {
         isDrawing = true;
@@ -203,11 +318,21 @@ document.addEventListener('mousemove', (e) => {
         lastX = x;
         lastY = y;
     }
+    
+    // Calculate angle for cursor rotation based on movement direction
+    if (isDrawing && (lastX !== x || lastY !== y)) {
+        const angle = Math.atan2(y - lastY, x - lastX);
+        lastAngle = angle;
+    }
+    
+    // Update cursor position and rotation
+    updateCursor(x, y, lastAngle);
 });
 
 // Mouse leave - stop drawing
 document.addEventListener('mouseleave', () => {
     isDrawing = false;
+    customCursor.style.opacity = '0';
 });
 
 // Reset on click
@@ -216,6 +341,7 @@ document.addEventListener('click', () => {
         setTimeout(() => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             isDrawing = false;
+            customCursor.style.opacity = '0';
         }, 3000);
     }
 });
@@ -296,4 +422,5 @@ snapshotBtn.addEventListener('click', async () => {
 window.addEventListener('load', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     isScrolled = false;
+    customCursor.style.opacity = '0';
 });

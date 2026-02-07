@@ -13,6 +13,9 @@
 <body>
     <!-- Drawing Canvas -->
     <canvas id="drawingCanvas"></canvas>
+    
+    <!-- Custom Cursor -->
+    <div id="customCursor" class="custom-cursor"></div>
 
     <!-- Header -->
     <header>
@@ -465,6 +468,19 @@
             </article>
         </div>
     </section>
+
+    <!-- Gallery Preview Modal -->
+    <div class="gallery-modal" id="galleryModal">
+        <div class="gallery-modal-content">
+            <button class="gallery-modal-close" id="galleryModalClose">×</button>
+            <img class="gallery-modal-image" id="galleryModalImage" src="" alt="Gallery preview">
+            <div class="gallery-modal-nav">
+                <button class="gallery-nav-prev" id="galleryNavPrev">❮</button>
+                <div class="gallery-modal-counter"><span id="galleryCurrentImage">1</span> / <span id="galleryTotalImages">1</span></div>
+                <button class="gallery-nav-next" id="galleryNavNext">❯</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Font Preview Modal -->
     <div class="font-modal" id="fontModal">
