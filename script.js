@@ -429,3 +429,57 @@ window.addEventListener('load', () => {
     isScrolled = false;
     customCursor.style.opacity = '0';
 });
+
+const stickers = document.querySelectorAll(".sticker");
+
+/* ---- SHOW ON SCROLL ---- */
+window.addEventListener("scroll", () => {
+    const scrollY = window.scrollY;
+
+    stickers.forEach(sticker => {
+        const showAt = parseInt(sticker.dataset.showAt);
+
+        if (scrollY > showAt) {
+            sticker.style.display = "block";
+        }
+    });
+});
+
+
+/* ---- DRAG STICKER ---- */
+stickers.forEach(sticker => {
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+    sticker.addEventListener("mousedown", (e) => {
+
+        e.stopPropagation();
+
+        // 👉 AGREGA ESTA LÍNEA
+        sticker.classList.add("dragging");
+
+        offsetX = e.clientX - sticker.offsetLeft;
+        offsetY = e.clientY - sticker.offsetTop;
+
+        const moveSticker = (e) => {
+            sticker.style.left = `${e.clientX - offsetX}px`;
+            sticker.style.top = `${e.clientY - offsetY}px`;
+        };
+
+        const stopDrag = () => {
+
+            // 👉 AGREGA ESTA LÍNEA
+            sticker.classList.remove("dragging");
+
+            document.removeEventListener("mousemove", moveSticker);
+            document.removeEventListener("mouseup", stopDrag);
+        };
+
+        document.addEventListener("mousemove", moveSticker);
+        document.addEventListener("mouseup", stopDrag);
+
+        sticker.style.zIndex = Date.now();
+    });
+
+});

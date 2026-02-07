@@ -839,6 +839,28 @@ header {
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
+.sticker {
+    position: absolute;
+    transition: opacity 0.5s ease;
+    z-index: 99;
+    cursor: grab;
+    user-select: none;
+}
+
+.sticker img {
+    width: 150px;
+    pointer-events: none;
+    transition: transform 0.2s ease;
+}
+
+/* Grow while grabbed */
+.sticker.dragging img {
+    transform: scale(1.12);
+}
+
+
+
+
 /* Footer */
 footer {
     background-color: #1a1a1a;
