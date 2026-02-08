@@ -232,8 +232,6 @@ header {
   font-size: 10px;
   letter-spacing: 0.05em;
   font-family: inherit;
-  border-color: #111;
-  border-radius: 10px;
 
   /* --- THE VISIBILITY TOGGLE (Crucial) --- */
   opacity: 0;
@@ -258,15 +256,18 @@ header {
 
 #sideNav li {
   margin-bottom: 12px;
+  transform: rotate(-8deg); /* A small negative number tilts it upward */
+
 }
+
 
 #sideNav a {
   text-decoration: none;
-  color: rgb(70, 70, 70);
+  color: rgb(163, 163, 163);
 }
 
 #sideNav a:hover {
-  opacity: 0.5;
+  color: rgb(31, 31, 31);
   font-size: 12px;
   transition: font-size 0.3s ease;
 }
