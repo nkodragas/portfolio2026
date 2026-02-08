@@ -533,3 +533,5 @@ document.addEventListener("mouseup", () => {
     activeSticker.classList.remove("dragging");
     activeSticker = null;
 });
+
+

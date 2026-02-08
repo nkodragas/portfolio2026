@@ -1114,3 +1114,27 @@ html {
 .notebook.active:hover {
     transform: translateX(-60px);
 }
+
+.cascade-toggle {
+    margin-top: 12px;
+    padding: 8px 14px;
+    border: none;
+    background: black;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.cascade-toggle:hover {
+    opacity: 0.8;
+}
+
+.cascade-preview {
+    display: none;
+    margin-top: 25px;
+    line-height: 1.2;
+}
+
+.cascade-line {
+    margin: 4px 0;
+}

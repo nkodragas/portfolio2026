@@ -646,10 +646,16 @@
                     >
                 </div>
             </div>
+            <button class="cascade-toggle" id="cascadeToggle">
+            Toggle Cascade Preview
+            </button>
+
 
             <div class="preview-output" id="previewOutput">
                 The quick brown fox jumps over the lazy dog
             </div>
+            <div class="cascade-preview" id="cascadePreview"></div>
+
 
             <div class="specimen-section">
                 <h3 class="specimen-title">Character Set</h3>
@@ -666,19 +672,98 @@
     <!-- Contact Section -->
     <section class="contact-section">
         <div class="container">
-            <p class="contact-label">MY CONTACTS</p>
+            <p class="contact-label">CONTACTO</p>
             <div class="contact-info">
-                <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="573f323b3b38203e3924233839353b363c32173a363e3b7934383a">[email&#160;protected]</a></p>
-                <p></p>
+                <p>
+  <a href="mailto:nicolasdragas.a@gmail.com">
+    Contact me
+  </a>
+</p>
+
             </div>
             <div class="social-links">
-                <a href="#" class="social-btn" aria-label="Facebook">f</a>
-                <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
-                <a href="#" class="social-btn" aria-label="Behance">Be</a>
+                <a href="https://www.linkedin.com/in/nicolas-dragas/" class="social-btn" aria-label="LinkedIn">in</a>
+                <a href="https://www.behance.net/nkodragas" class="social-btn" aria-label="Behance">Be</a>
             </div>
         </div>
     </section>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
+    const cascadeToggle   = document.getElementById("cascadeToggle");
+    const cascadePreview  = document.getElementById("cascadePreview");
+    const previewOutput   = document.getElementById("previewOutput");
+    const previewInput    = document.getElementById("previewInput");
+    const fontSizeSlider  = document.getElementById("fontSizeSlider");
+
+    if (!cascadeToggle || !cascadePreview || !previewOutput || !previewInput) {
+        console.warn("Cascade preview: missing elements");
+        return;
+    }
+
+    let cascadeActive = false;
+
+    function generateCascade() {
+
+        cascadePreview.innerHTML = "";
+
+        const text = previewInput.value || previewInput.placeholder;
+        const computedStyle = window.getComputedStyle(previewOutput);
+        const fontFamily = computedStyle.fontFamily;
+
+        // 🔒 Fixed cascade sizes (independent from slider)
+        const sizes = [60, 48, 32, 24, 18, 12, 9];
+
+        sizes.forEach(size => {
+            const line = document.createElement("div");
+
+            line.className = "cascade-line";
+            line.style.fontSize = size + "px";
+            line.style.fontFamily = fontFamily;
+            line.textContent = text;
+
+            cascadePreview.appendChild(line);
+        });
+    }
+
+    // Toggle cascade
+    cascadeToggle.addEventListener("click", () => {
+
+        cascadeActive = !cascadeActive;
+
+        cascadePreview.style.display = cascadeActive ? "block" : "none";
+        previewOutput.style.display  = cascadeActive ? "none"  : "block";
+
+        if (cascadeActive) generateCascade();
+    });
+
+    // Text input
+    previewInput.addEventListener("input", () => {
+
+        previewOutput.textContent = previewInput.value;
+
+        if (cascadeActive) generateCascade();
+    });
+
+    // Font slider affects ONLY preview
+    if (fontSizeSlider) {
+        fontSizeSlider.addEventListener("input", () => {
+            previewOutput.style.fontSize = fontSizeSlider.value + "px";
+        });
+    }
+
+    // Auto update cascade if font family changes
+    const observer = new MutationObserver(() => {
+        if (cascadeActive) generateCascade();
+    });
+
+    observer.observe(previewOutput, {
+        attributes: true,
+        attributeFilter: ["style", "class"]
+    });
+
+});
+</script>
 
 
     <!-- Footer -->
