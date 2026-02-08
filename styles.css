@@ -1136,3 +1136,24 @@ html {
 .cascade-line {
     margin: 4px 0;
 }
+
+.hello-hover {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.hello-gif {
+  width: 120px; /* adjust size */
+  opacity: 0;
+  transform: translateX(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hello-hover:hover .hello-gif {
+  opacity: 1;
+  transform: translateX(0);
+}
