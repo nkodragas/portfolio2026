@@ -483,3 +483,22 @@ stickers.forEach(sticker => {
     });
 
 });
+
+const notebook = document.querySelector(".notebook");
+const fontsSection = document.querySelector(".fonts-section");
+
+if (notebook && fontsSection) {
+
+    const observer = new IntersectionObserver(
+        ([entry]) => {
+            if (entry.isIntersecting) {
+                notebook.classList.add("active");
+            } else {
+                notebook.classList.remove("active");
+            }
+        },
+        { threshold: 0.3 }
+    );
+
+    observer.observe(fontsSection);
+}

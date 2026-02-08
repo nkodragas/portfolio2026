@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="/images/dragas.png">
+  <title>Notebook 1</title>
+</head>
+
+<body>
+      <img 
+    src="/images/hero.webp" 
+    alt="" 
+    style="
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:auto;
+        object-fit:cover;
+        pointer-events:none;
+        z-index:-1;
+    "
+    >
+<!-- Background wrapper behind the book -->
+<div 
+  style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:50px;
+  "
+>
+
+  <!-- Background behind book -->
+  <div 
+    style="
+      background:url('images/bg.png') center/cover no-repeat;
+      padding:40px;
+      border-radius:20px;
+      width:1000px;
+      height:744px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    "
+  >
+
+    <!-- Flipbook -->
+    <div class="flipbook">
+
+      <!-- Cover -->
+      <div class="page">
+        <img src="cover.webp">
+      </div>
+
+      <div class="page">
+        <img src="images/img1_01.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img1_02.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img2_01.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img2_02.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img3_01.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img3_02.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img4_01.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img4_02.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img5_01.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img5_02.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img6_01.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img6_02.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img7_01.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img7_02.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img8_01.png">
+      </div>
+
+      <div class="page">
+        <img src="images/img8_02.png">
+      </div>
+
+      <!-- Back cover -->
+      <div class="page">
+        <img src="cover.webp">
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div><button class="button" onclick="window.close()">Go Back</button>
+
+</div>
+
+</script>
+
+
+<script src="jquery.js"></script>
+<script src="turn.js"></script>
+
+<script>
+window.addEventListener("load", function() {
+
+  $(".flipbook").turn({
+    width: 852,
+    height: 644,
+    autoCenter: true
+    
+  });
+
+});
+</script>
+</body>
+
+</html>
