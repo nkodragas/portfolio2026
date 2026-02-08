@@ -222,13 +222,13 @@ header {
 #sideNav {
   /* --- YOUR ORIGINAL STYLES --- */
   position: fixed;
-  top: 80%;
+  top: 40%;
   left: 32px;
   z-index: 9999;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 65vh;
+  height: 85vh;
   font-size: 10px;
   letter-spacing: 0.05em;
   font-family: inherit;
@@ -256,8 +256,7 @@ header {
 
 #sideNav li {
   margin-bottom: 12px;
-  transform: rotate(-8deg); /* A small negative number tilts it upward */
-
+  transform: rotate(-12deg); /* A small negative number tilts it upward */
 }
 
 
