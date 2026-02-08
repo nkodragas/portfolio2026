@@ -456,7 +456,7 @@ stickers.forEach(sticker => {
 
         e.stopPropagation();
 
-        // 👉 AGREGA ESTA LÍNEA
+
         sticker.classList.add("dragging");
 
         offsetX = e.clientX - sticker.offsetLeft;
@@ -469,7 +469,7 @@ stickers.forEach(sticker => {
 
         const stopDrag = () => {
 
-            // 👉 AGREGA ESTA LÍNEA
+
             sticker.classList.remove("dragging");
 
             document.removeEventListener("mousemove", moveSticker);
@@ -502,3 +502,34 @@ if (notebook && fontsSection) {
 
     observer.observe(fontsSection);
 }
+
+let activeSticker = null;
+let offsetX = 0;
+let offsetY = 0;
+
+document.querySelectorAll(".sticker-animated").forEach(sticker => {
+
+    sticker.addEventListener("mousedown", e => {
+        activeSticker = sticker;
+
+        offsetX = e.clientX - sticker.offsetLeft;
+        offsetY = e.clientY - sticker.offsetTop;
+
+        sticker.classList.add("dragging");
+    });
+
+});
+
+document.addEventListener("mousemove", e => {
+    if (!activeSticker) return;
+
+    activeSticker.style.left = (e.clientX - offsetX) + "px";
+    activeSticker.style.top = (e.clientY - offsetY) + "px";
+});
+
+document.addEventListener("mouseup", () => {
+    if (!activeSticker) return;
+
+    activeSticker.classList.remove("dragging");
+    activeSticker = null;
+});
