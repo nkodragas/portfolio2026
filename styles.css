@@ -285,8 +285,8 @@ header {
 }
 
 .project-behance {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 9px;
+    font-weight: 500;
     color: white;
     background-color: #1a1a1a;
     padding: 6px 12px;
@@ -294,7 +294,7 @@ header {
     text-decoration: none;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1.5px;
 }
 
 .project-behance:hover {
