@@ -534,4 +534,50 @@ document.addEventListener("mouseup", () => {
     activeSticker = null;
 });
 
+/* --- SIDENAV TOGGLE: Editorial Onward --- */
+const sideNav = document.getElementById('sideNav');
+const editorialSection = document.querySelector('.editorial-section');
 
+if (sideNav && editorialSection) {
+    const sideNavObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // entry.boundingClientRect.top < 0 means the section has passed the top of the screen
+            // entry.isIntersecting means the section is currently visible
+            if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
+                sideNav.classList.add('is-visible');
+            } else {
+                // This will hide it only if you scroll back ABOVE the Editorial section
+                sideNav.classList.remove('is-visible');
+            }
+        });
+    }, { 
+        root: null,
+        threshold: 0.2 // Trigger as soon as the very first pixel enters
+    });
+
+    sideNavObserver.observe(editorialSection);
+}
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const target = document.querySelector(targetId);
+        
+        if (target) {
+            if (targetId === '#about') {
+                // Calculate the position to center the element
+                const elementRect = target.getBoundingClientRect();
+                const absoluteElementTop = elementRect.top + window.pageYOffset;
+                const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+
+                window.scrollTo({
+                    top: middle,
+                    behavior: 'smooth'
+                });
+            } else {
+                // Default behavior for other links
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+});

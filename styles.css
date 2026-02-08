@@ -219,6 +219,62 @@ header {
     z-index: 1;
 }
 
+#sideNav {
+  /* --- YOUR ORIGINAL STYLES --- */
+  position: fixed;
+  top: 80%;
+  left: 32px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 65vh;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  font-family: inherit;
+  border-color: #111;
+  border-radius: 10px;
+
+  /* --- THE VISIBILITY TOGGLE (Crucial) --- */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none; 
+  transition: opacity 0.1s ease, visibility 0.1s ease;
+}
+
+/* When JS adds this class, it fades in */
+#sideNav.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Restore your list and link styling */
+#sideNav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#sideNav li {
+  margin-bottom: 12px;
+}
+
+#sideNav a {
+  text-decoration: none;
+  color: rgb(70, 70, 70);
+}
+
+#sideNav a:hover {
+  opacity: 0.5;
+  font-size: 12px;
+  transition: font-size 0.3s ease;
+}
+
+.side-contact {
+  font-size: 12px;
+  opacity: 0.6;
+}
 
 
 .look-further-canvas {
