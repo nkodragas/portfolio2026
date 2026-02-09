@@ -230,6 +230,7 @@ header {
   justify-content: space-between;
   height: 85vh;
   font-size: 10px;
+  font-weight: lighter;
   letter-spacing: 0.05em;
   font-family: inherit;
 
@@ -267,8 +268,8 @@ header {
 
 #sideNav a:hover {
   color: rgb(31, 31, 31);
-  font-size: 12px;
-  transition: font-size 0.3s ease;
+  font-weight: bold;
+  transition: font-weight 0.3s ease;
 }
 
 .side-contact {
