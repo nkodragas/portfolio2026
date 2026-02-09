@@ -219,64 +219,63 @@ header {
     z-index: 1;
 }
 
+/* Hide on mobile/standard displays */
 #sideNav {
-  /* --- YOUR ORIGINAL STYLES --- */
-  position: fixed;
-  top: 40%;
-  left: 32px;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 85vh;
-  font-size: 10px;
-  font-weight: lighter;
-  letter-spacing: 0.05em;
-  font-family: inherit;
-
-  /* --- THE VISIBILITY TOGGLE (Crucial) --- */
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none; 
-  transition: opacity 0.1s ease, visibility 0.1s ease;
+    display: none;
 }
 
-/* When JS adds this class, it fades in */
-#sideNav.is-visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+/* Enable for Ultra-wide (1695px+) */
+@media (min-width: 1695px) {
+    #sideNav {
+        display: flex;
+        position: fixed;
+        left: 32px;
+        top: 50%;
+        z-index: 100;
+        flex-direction: column;
+        justify-content: center;
+        
+        font-family: inherit;
+        font-size: 10px;
+        font-weight: 300;
+        letter-spacing: 0.05em;
+
+        /* Hidden State: Slid off-screen to the left */
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translate(-150%, -50%);
+        
+        /* Hiding Animation: 0.8s duration, delayed visibility to let slide finish */
+        transition: 
+            transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), 
+            opacity 0.6s ease,
+            visibility 0s linear 0.8s;
+    }
+
+    #sideNav.is-visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translate(0, -50%);
+        /* Showing Animation: Instant visibility */
+        transition: 
+            transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), 
+            opacity 0.4s ease,
+            visibility 0s linear 0s;
+    }
+
+    /* List Item Styling */
+    #sideNav ul { list-style: none; margin: 0; padding: 0; }
+    #sideNav li { margin-bottom: 15px; transform: rotate(-10deg); transition: transform 0.3s ease; }
+    #sideNav a { text-decoration: none; color: rgb(163, 163, 163); transition: color 0.3s ease; display: inline-block; }
+    
+    /* Hover Effects */
+    #sideNav a:hover { color: rgb(31, 31, 31); text-shadow: 0.5px 0 0 currentColor; }
+    #sideNav li:hover { transform: rotate(0deg); }
+
+    .side-contact { margin-top: 30px; font-size: 11px; opacity: 0.5; }
 }
-
-/* Restore your list and link styling */
-#sideNav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-#sideNav li {
-  margin-bottom: 12px;
-  transform: rotate(-12deg); /* A small negative number tilts it upward */
-}
-
-
-#sideNav a {
-  text-decoration: none;
-  color: rgb(163, 163, 163);
-}
-
-#sideNav a:hover {
-  color: rgb(31, 31, 31);
-  font-weight: bold;
-  transition: font-weight 0.3s ease;
-}
-
-.side-contact {
-  font-size: 12px;
-  opacity: 0.6;
-}
-
 
 .look-further-canvas {
     position: relative;

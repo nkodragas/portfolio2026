@@ -533,29 +533,61 @@ document.addEventListener("mouseup", () => {
     activeSticker.classList.remove("dragging");
     activeSticker = null;
 });
-
-/* --- SIDENAV TOGGLE: Editorial Onward --- */
 const sideNav = document.getElementById('sideNav');
 const editorialSection = document.querySelector('.editorial-section');
+let hideTimeout;
+let hasShownOnce = false; // Tracks if it has appeared for the first time
+let isInZone = false;
+
+function showNav() {
+    sideNav.classList.add('is-visible');
+    
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+        if (!sideNav.matches(':hover')) {
+            sideNav.classList.remove('is-visible');
+            // CRITICAL: Once it hides the first time, deactivate scroll trigger
+            hasShownOnce = true; 
+        }
+    }, 3000); 
+}
 
 if (sideNav && editorialSection) {
-    const sideNavObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            // entry.boundingClientRect.top < 0 means the section has passed the top of the screen
-            // entry.isIntersecting means the section is currently visible
-            if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
-                sideNav.classList.add('is-visible');
-            } else {
-                // This will hide it only if you scroll back ABOVE the Editorial section
-                sideNav.classList.remove('is-visible');
-            }
-        });
-    }, { 
-        root: null,
-        threshold: 0.2 // Trigger as soon as the very first pixel enters
+    const updateZoneStatus = () => {
+        const rect = editorialSection.getBoundingClientRect();
+        // Check if user is in the editorial zone or further down
+        isInZone = rect.top < (window.innerHeight * 0.7);
+        
+        if (!isInZone) {
+            sideNav.classList.remove('is-visible');
+            hasShownOnce = false; // Reset if they go back to the very top
+        }
+    };
+
+    // 1. MOUSE PROXIMITY (Always active in the zone)
+    window.addEventListener('mousemove', (e) => {
+        if (isInZone && e.clientX < 150) {
+            showNav();
+        }
     });
 
-    sideNavObserver.observe(editorialSection);
+    // 2. SCROLL TRIGGER (Only fires if NOT shown once yet)
+    window.addEventListener('scroll', () => {
+        updateZoneStatus();
+        
+        if (isInZone && !hasShownOnce) {
+            showNav();
+        }
+    }, { passive: true });
+
+    // 3. HOVER PROTECTION
+    sideNav.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    sideNav.addEventListener('mouseleave', () => {
+        hideTimeout = setTimeout(() => {
+            sideNav.classList.remove('is-visible');
+            hasShownOnce = true;
+        }, 1500);
+    });
 }
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -581,3 +613,4 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
