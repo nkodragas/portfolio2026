@@ -18,6 +18,38 @@ document.querySelectorAll('.fade-in-up').forEach(el => {
     observer.observe(el);
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Buscamos todos los elementos con la clase fade-in-up dentro de esta sección
+                const elements = entry.target.querySelectorAll('.fade-in-up');
+                
+                elements.forEach((el, index) => {
+                    // Aplicamos el retraso progresivo (0.15s entre cada uno)
+                    el.style.transitionDelay = `${index * 0.08}s`;
+                    el.classList.add('is-visible');
+                });
+
+                // Dejamos de observar para que la animación solo ocurra una vez
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Seleccionamos los contenedores principales de tu HTML
+    const containers = document.querySelectorAll('.about-grid, .project-item, .fonts-catalogue, .posters-section, .branding-section');
+    
+    containers.forEach(container => {
+        observer.observe(container);
+    });
+});
+
 // Font Modal Functionality
 const fontModal = document.getElementById('fontModal');
 const modalClose = document.getElementById('modalClose');

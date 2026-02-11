@@ -1047,15 +1047,18 @@ footer p {
     }
 }
 
+/* Modifica esto en tu styles.css */
 .fade-in-up {
     opacity: 0;
-    animation: fadeInUp 0.8s ease forwards;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
-.delay-4 { animation-delay: 0.4s; }
+/* Esta clase se la pondremos con JS */
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* Responsive */
 @media (max-width: 1024px) {
