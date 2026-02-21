@@ -157,6 +157,17 @@ header {
     height: auto;
     display: block;
 }
+.about-section, 
+.editorial-section, 
+.look-further-section, 
+.fonts-section, 
+.branding-section, 
+.poster-section {
+    position: relative;
+    /* This ensures sections don't accidentally overlap 
+       stickers from the previous section */
+    z-index: 0; 
+}
 
 /* About Section */
 .about-section {
@@ -919,73 +930,60 @@ header {
     font-weight: 600;
     transition: all 0.3s ease;
 }
+/* --- STICKERS BASE --- */
+.sticker, 
 .sticker-animated {
     position: absolute;
-    display: inline-block;
+    /* Highest possible priority */
+    z-index: 999999 !important; 
     cursor: grab;
+    user-select: none;
+    /* Ensure the container doesn't block clicks */
+    pointer-events: auto; 
 }
 
-/* Base frame defines size */
-.sticker-animated img:first-child {
-    width: 150px;
-    display: block;
+/* Base image rules */
+.sticker img, 
+.sticker-animated img {
     pointer-events: none;
-    position: relative;   /* IMPORTANT */
-    z-index: 99;
+    display: block;
 }
 
-/* Hover frame stacked on top */
+/* --- ANIMATED STICKER FIX --- */
+/* This ensures frames stack perfectly without doubling up */
+.sticker-animated {
+    display: inline-block;
+}
+
 .sticker-animated img:last-child {
-    width: 150px;
     position: absolute;
     top: 0;
     left: 0;
-    pointer-events: none;
-    z-index: 2;
     opacity: 0;
 }
 
-/* True frame swap */
+/* Frame Swap on Hover */
 .sticker-animated:hover img:first-child {
     opacity: 0;
 }
-
 .sticker-animated:hover img:last-child {
     opacity: 1;
 }
 
-/* Disable animation while dragging */
-.sticker-animated.dragging img:first-child {
-    opacity: 1;
+/* --- THE KILL SWITCH --- */
+/* Hide stickers when resolution is too low to fit them */
+@media screen and (max-width: 1340px) {
+    .sticker, 
+    .sticker-animated {
+        display: none !important;
+    }
 }
 
-.sticker-animated.dragging img:last-child {
-    opacity: 0;
+/* Visual feedback for dragging - No transitions here to avoid lag */
+.sticker.dragging img,
+.sticker-animated.dragging img {
+    transform: scale(1.1);
 }
-
-
-
-
-.sticker {
-    position: absolute;
-    transition: opacity 0.5s ease;
-    z-index: 99;
-    cursor: grab;
-    user-select: none;
-}
-
-.sticker img {
-    width: 150px;
-    pointer-events: none;
-    transition: transform 0.2s ease;
-}
-
-/* Grow while grabbed */
-.sticker.dragging img {
-    transform: scale(1.12);
-}
-
-
 /* Footer */
 footer {
     background-color: #1a1a1a;
@@ -1052,17 +1050,18 @@ footer p {
     }
 }
 
-/* Modifica esto en tu styles.css */
+
 .fade-in-up {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-/* Esta clase se la pondremos con JS */
+
 .fade-in-up.visible {
     opacity: 1;
     transform: translateY(0);
+    z-index: 1;
 }
 
 /* Responsive */
