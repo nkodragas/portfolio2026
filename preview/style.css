@@ -18,7 +18,6 @@
     
     font-weight: 900;
     line-height: 0.85;
-    letter-spacing: -4px;
     color: #000;
     white-space: pre-wrap;
     /* El tamaño se controla por JS, pero podemos poner un fallback */
