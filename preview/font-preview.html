@@ -126,7 +126,13 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            pointer-events: none; /* Prevents ghost image dragging */
+            pointer-events: auto; /* Enable pointer events for hover detection */
+            transition: transform 0.1s ease-out;
+            cursor: grab;
+        }
+
+        img:active {
+            cursor: grabbing;
         }
     </style>
 </head>
@@ -162,8 +168,7 @@
         </div>
     </div>
 
-    <div class="canvas" id="editor" contenteditable="true">bags books trueno
-dead dog</div>
+    <div class="canvas" id="editor" contenteditable="true">the quick brown fox jumps over the lazy dog</div>
 </div>
 
 <script>
@@ -218,6 +223,88 @@ dead dog</div>
     // Apply dragging to both windows
     makeDraggable(document.getElementById('macWindow'));
     makeDraggable(document.getElementById('imageWin'));
+
+    // --- IMAGE ZOOM ON WHEEL SCROLL ---
+    const imageWindow = document.getElementById('imageWin');
+    const imageElement = imageWindow.querySelector('img');
+    const contentContainer = imageWindow.querySelector('.content');
+    let currentZoom = 1;
+    let panX = 0;
+    let panY = 0;
+    const zoomSpeed = 0.1;
+    const minZoom = 0.5;
+    const maxZoom = 3;
+
+    function updateImageTransform() {
+        imageElement.style.transform = `scale(${currentZoom}) translate(${panX}px, ${panY}px)`;
+    }
+
+    imageWindow.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        
+        // Zoom in/out based on scroll direction
+        if (e.deltaY < 0) {
+            // Scroll up - zoom in
+            currentZoom += zoomSpeed;
+        } else {
+            // Scroll down - zoom out
+            currentZoom -= zoomSpeed;
+        }
+        
+        // Clamp zoom level
+        currentZoom = Math.max(minZoom, Math.min(maxZoom, currentZoom));
+        
+        // Reset pan when zooming out to min
+        if (currentZoom === minZoom) {
+            panX = 0;
+            panY = 0;
+        }
+        
+        updateImageTransform();
+    }, { passive: false });
+
+    // --- IMAGE PAN ON DRAG (WHEN ZOOMED) ---
+    let isPanning = false;
+    let panStartX = 0;
+    let panStartY = 0;
+    let panStartPanX = 0;
+    let panStartPanY = 0;
+
+    imageElement.addEventListener('mousedown', (e) => {
+        if (currentZoom > 1) {
+            isPanning = true;
+            panStartX = e.clientX;
+            panStartY = e.clientY;
+            panStartPanX = panX;
+            panStartPanY = panY;
+            imageElement.style.cursor = 'grabbing';
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isPanning && currentZoom > 1) {
+            const deltaX = e.clientX - panStartX;
+            const deltaY = e.clientY - panStartY;
+            
+            panX = panStartPanX + (deltaX / currentZoom);
+            panY = panStartPanY + (deltaY / currentZoom);
+            
+            // Constrain pan to reasonable bounds
+            const maxPan = 100;
+            panX = Math.max(-maxPan, Math.min(maxPan, panX));
+            panY = Math.max(-maxPan, Math.min(maxPan, panY));
+            
+            updateImageTransform();
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isPanning) {
+            isPanning = false;
+            imageElement.style.cursor = 'grab';
+        }
+    });
 </script>
 
 </body>
