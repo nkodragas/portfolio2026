@@ -2,9 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Font Preview</title>
+    <title>Font Preview - Fixed</title>
     <style>
-        /* 1. DECLARACIÓN DE LA FUENTE OTF */
         @font-face {
             font-family: 'BrutalistGrotesk';
             src: url('BrutalistGrotesk.otf') format('opentype');
@@ -18,21 +17,18 @@
         }
 
         body {
-            /* Imagen de fondo */
+            background: #222; /* Fallback color */
             background: url('4.png') no-repeat center center fixed;
             background-size: cover;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             height: 100vh;
             margin: 0;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative;
         }
 
-        .window {
-            width: 850px;
-            height: 650px;
+        /* Common Window Styles */
+        .window, .image-window {
             background: white;
             border-radius: 12px;
             box-shadow: 0 30px 70px rgba(0,0,0,0.4);
@@ -40,24 +36,37 @@
             display: flex;
             flex-direction: column;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             resize: both;
             overflow: hidden;
+            /* Removed translate transform to prevent jumping during drag */
         }
 
-        /* Barra superior arrastrable */
+        .window {
+            width: 850px;
+            height: 650px;
+            top: 10%;
+            left: 30%;
+            z-index: 10;
+        }
+
+        .image-window {
+            width: 600px;
+            height: 400px;
+            top: 20%;
+            left: 10%;
+            z-index: 5;
+        }
+
         .title-bar {
             height: 35px;
             background: var(--toolbar-bg);
             border-bottom: 1px solid #e5e5e5;
-            border-radius: 12px 12px 0 0;
             display: flex;
             align-items: center;
             padding: 0 12px;
             cursor: grab;
             user-select: none;
+            flex-shrink: 0;
         }
 
         .title-bar:active { cursor: grabbing; }
@@ -68,7 +77,6 @@
         .yellow { background: #ffbd2e; }
         .green { background: #27c93f; }
 
-        /* Barra de herramientas */
         .toolbar {
             height: 45px;
             background: var(--toolbar-bg);
@@ -85,8 +93,6 @@
             border-radius: 4px;
             padding: 3px 8px;
             font-size: 13px;
-            display: flex;
-            align-items: center;
         }
 
         #font-size-input {
@@ -94,32 +100,54 @@
             width: 60px;
             outline: none;
             font-size: 13px;
-            color: #333;
-            background: transparent;
         }
 
-        /* ÁREA DE TEXTO CON LA FUENTE PERSONALIZADA */
         .canvas {
             flex-grow: 1;
             padding: 30px;
             overflow-y: auto;
             outline: none;
-            
-            /* Aplicación de Brutalist Grotesk */
             font-family: 'BrutalistGrotesk', sans-serif;
-            
             line-height: 1.5;
-
             color: #000;
             white-space: pre-wrap;
-            /* El tamaño inicial se fuerza por JS */
+        }
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            pointer-events: none; /* Prevents ghost image dragging */
         }
     </style>
 </head>
 <body>
 
+<div class="image-window" id="imageWin">
+    <div class="title-bar drag-handle">
+        <div class="dots">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+        <span style="margin-left: 10px; font-size: 12px; color: #666;">Image Preview</span>
+    </div>
+    <div class="content">
+        <img src="5.png" alt="Preview Image">
+    </div>
+</div>
+
 <div class="window" id="macWindow">
-    <div class="title-bar" id="dragZone">
+    <div class="title-bar drag-handle">
         <div class="dots">
             <div class="dot red"></div>
             <div class="dot yellow"></div>
@@ -141,10 +169,8 @@ dead dog</div>
 <script>
     const input = document.getElementById('font-size-input');
     const editor = document.getElementById('editor');
-    const win = document.getElementById('macWindow');
-    const dragZone = document.getElementById('dragZone');
 
-    // --- ACTUALIZACIÓN DE TAMAÑO ---
+    // --- FONT SIZE LOGIC ---
     function updateFontSize() {
         const rawValue = input.value.replace(' pt', '').trim();
         if (!isNaN(rawValue) && rawValue !== "") {
@@ -152,41 +178,46 @@ dead dog</div>
         }
     }
 
-    // Al cargar y al escribir
-    window.addEventListener('load', updateFontSize);
     input.addEventListener('input', updateFontSize);
-
     input.addEventListener('blur', () => {
         if (!input.value.includes('pt')) input.value += ' pt';
     });
+    window.addEventListener('load', updateFontSize);
 
-    // --- LÓGICA DRAGGABLE (SIN SALTOS) ---
-    let isDragging = false;
-    let startX, startY, initialX, initialY;
+    // --- REUSABLE DRAG LOGIC ---
+    function makeDraggable(windowEl) {
+        const handle = windowEl.querySelector('.drag-handle');
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-    dragZone.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        const rect = win.getBoundingClientRect();
-        initialX = rect.left;
-        initialY = rect.top;
-        startX = e.clientX;
-        startY = e.clientY;
-        
-        win.style.transform = 'none';
-        win.style.left = initialX + 'px';
-        win.style.top = initialY + 'px';
-        win.style.margin = '0'; // Limpiar márgenes de centrado
-    });
+        handle.onmousedown = (e) => {
+            e.preventDefault();
+            // Bring clicked window to front
+            document.querySelectorAll('.window, .image-window').forEach(w => w.style.zIndex = 5);
+            windowEl.style.zIndex = 10;
 
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        win.style.left = (initialX + dx) + 'px';
-        win.style.top = (initialY + dy) + 'px';
-    });
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            
+            document.onmousemove = (e) => {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                windowEl.style.top = (windowEl.offsetTop - pos2) + "px";
+                windowEl.style.left = (windowEl.offsetLeft - pos1) + "px";
+            };
 
-    document.addEventListener('mouseup', () => isDragging = false);
+            document.onmouseup = () => {
+                document.onmousemove = null;
+                document.onmouseup = null;
+            };
+        };
+    }
+
+    // Apply dragging to both windows
+    makeDraggable(document.getElementById('macWindow'));
+    makeDraggable(document.getElementById('imageWin'));
 </script>
 
 </body>
