@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Font Preview</title>
+    <style>
+        /* 1. DECLARACIÓN DE LA FUENTE OTF */
+        @font-face {
+            font-family: 'BrutalistGrotesk';
+            src: url('BrutalistGrotesk.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --toolbar-bg: #f6f6f6;
+            --border-color: #d1d1d1;
+        }
+
+        body {
+            /* Imagen de fondo */
+            background: url('4.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .window {
+            width: 850px;
+            height: 650px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            resize: both;
+            overflow: hidden;
+        }
+
+        /* Barra superior arrastrable */
+        .title-bar {
+            height: 35px;
+            background: var(--toolbar-bg);
+            border-bottom: 1px solid #e5e5e5;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .title-bar:active { cursor: grabbing; }
+
+        .dots { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; border: 0.5px solid rgba(0,0,0,0.1); }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+
+        /* Barra de herramientas */
+        .toolbar {
+            height: 45px;
+            background: var(--toolbar-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 12px;
+        }
+
+        .tool-box {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+
+        #font-size-input {
+            border: none;
+            width: 60px;
+            outline: none;
+            font-size: 13px;
+            color: #333;
+            background: transparent;
+        }
+
+        /* ÁREA DE TEXTO CON LA FUENTE PERSONALIZADA */
+        .canvas {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+            outline: none;
+            
+            /* Aplicación de Brutalist Grotesk */
+            font-family: 'BrutalistGrotesk', sans-serif;
+            
+            line-height: 1.5;
+            letter-spacing: -3px; /* Ajusta según el diseño de la Brutalist */
+            color: #000;
+            white-space: pre-wrap;
+            /* El tamaño inicial se fuerza por JS */
+        }
+    </style>
+</head>
+<body>
+
+<div class="window" id="macWindow">
+    <div class="title-bar" id="dragZone">
+        <div class="dots">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+    </div>
+    
+    <div class="toolbar">
+        <div class="tool-box">Regular ▾</div>
+        <div class="tool-box">
+            <input type="text" id="font-size-input" value="72 pt">
+        </div>
+    </div>
+
+    <div class="canvas" id="editor" contenteditable="true">bags books trueno
+dead dog</div>
+</div>
+
+<script>
+    const input = document.getElementById('font-size-input');
+    const editor = document.getElementById('editor');
+    const win = document.getElementById('macWindow');
+    const dragZone = document.getElementById('dragZone');
+
+    // --- ACTUALIZACIÓN DE TAMAÑO ---
+    function updateFontSize() {
+        const rawValue = input.value.replace(' pt', '').trim();
+        if (!isNaN(rawValue) && rawValue !== "") {
+            editor.style.fontSize = rawValue + 'pt';
+        }
+    }
+
+    // Al cargar y al escribir
+    window.addEventListener('load', updateFontSize);
+    input.addEventListener('input', updateFontSize);
+
+    input.addEventListener('blur', () => {
+        if (!input.value.includes('pt')) input.value += ' pt';
+    });
+
+    // --- LÓGICA DRAGGABLE (SIN SALTOS) ---
+    let isDragging = false;
+    let startX, startY, initialX, initialY;
+
+    dragZone.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        const rect = win.getBoundingClientRect();
+        initialX = rect.left;
+        initialY = rect.top;
+        startX = e.clientX;
+        startY = e.clientY;
+        
+        win.style.transform = 'none';
+        win.style.left = initialX + 'px';
+        win.style.top = initialY + 'px';
+        win.style.margin = '0'; // Limpiar márgenes de centrado
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        win.style.left = (initialX + dx) + 'px';
+        win.style.top = (initialY + dy) + 'px';
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+</script>
+
+</body>
+</html>

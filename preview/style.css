@@ -1,0 +1,26 @@
+/* Declaración de la fuente personalizada */
+@font-face {
+    font-family: 'Brutalist-Grotesk';
+    src: url('BrutalistGrotesk.otf') format('opentype');
+    font-weight: 900; /* Ajusta según el peso de tu OTF */
+    font-style: normal;
+}
+
+/* Aplicación al área de texto */
+.canvas {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+    outline: none;
+    
+    /* CAMBIO AQUÍ: Usamos el nombre definido arriba */
+    font-family: 'MiFuenteCustom', sans-serif;
+    
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -4px;
+    color: #000;
+    white-space: pre-wrap;
+    /* El tamaño se controla por JS, pero podemos poner un fallback */
+    font-size: 120pt; 
+}
