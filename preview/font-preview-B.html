@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Font Preview - Character Grid</title>
+    <style>
+        @font-face {
+            font-family: 'BrutalistGrotesk';
+            src: url('BrutalistGrotesk.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --toolbar-bg: #f6f6f6;
+            --border-color: #d1d1d1;
+        }
+
+        body {
+            background: #222; /* Fallback color */
+            background: url('4.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Common Window Styles */
+        .window, .detail-window {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            resize: both;
+            overflow: hidden;
+        }
+
+        .window {
+            width: 850px;
+            height: 650px;
+            top: 10%;
+            left: 30%;
+            z-index: 10;
+        }
+
+        .detail-window {
+            width: 900px;
+            height: 900px;
+            z-index: 20;
+        }
+
+        .title-bar {
+            height: 35px;
+            background: var(--toolbar-bg);
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            cursor: grab;
+            user-select: none;
+            flex-shrink: 0;
+            justify-content: space-between;
+        }
+
+        .title-bar:active { cursor: grabbing; }
+
+        .title-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .dots { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; border: 0.5px solid rgba(0,0,0,0.1); cursor: pointer; }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+
+        .close-btn {
+            cursor: pointer;
+            font-size: 18px;
+            color: #999;
+            margin-left: 10px;
+            user-select: none;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .toolbar {
+            height: 45px;
+            background: var(--toolbar-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 12px;
+        }
+
+        .tool-box {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 13px;
+        }
+
+        #font-size-input {
+            border: none;
+            width: 60px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .canvas {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            font-family: 'BrutalistGrotesk', sans-serif;
+        }
+
+        .char-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            width: 60px;
+            height: 60px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+
+        .char-cell:hover {
+            background: #f5f5f5;
+            border-color: #999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .char-cell:active {
+            transform: scale(0.95);
+        }
+
+        .detail-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+            background: #fafafa;
+        }
+
+        .char-detail-canvas {
+            position: relative;
+            width: 700px;
+            height: 700px;
+            border: 1px solid #ddd;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #glyph-canvas {
+            border: 1px solid #999;
+            background: white;
+        }
+
+        .char-large {
+            display: none;
+        }
+
+        .anchor-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff0000;
+            border-radius: 50%;
+            border: 1px solid #8b0000;
+        }
+
+        .anchor-label {
+            position: absolute;
+            font-size: 10px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(200, 200, 200, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200, 200, 200, 0.2) 1px, transparent 1px);
+            background-size: 15px 15px;
+            pointer-events: none;
+        }
+
+        .detail-info {
+            padding: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="window" id="mainWindow">
+    <div class="title-bar drag-handle">
+        <div class="title-content">
+            <div class="dots">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <span style="font-size: 12px; color: #666;">Character Grid</span>
+        </div>
+    </div>
+    
+    <div class="toolbar">
+        <div class="tool-box">BrutalistGrotesk</div>
+        <div class="tool-box">
+            <input type="text" id="font-size-input" value="48 px">
+        </div>
+    </div>
+
+    <div class="canvas" id="charGrid"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/opentype.js@latest/dist/opentype.min.js"></script>
+<script>
+    let detailWindowCount = 0;
+    let highestZIndex = 20;
+    let fontData = null;
+
+    // --- CHARACTER GRID GENERATION ---
+    const charGrid = document.getElementById('charGrid');
+    const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    const fontSizeInput = document.getElementById('font-size-input');
+
+    // --- LOAD FONT FILE ---
+    async function loadFont() {
+        try {
+            const response = await fetch('BrutalistGrotesk.otf');
+            const arrayBuffer = await response.arrayBuffer();
+            fontData = opentype.parse(arrayBuffer);
+            console.log('Font loaded successfully');
+        } catch (error) {
+            console.error('Error loading font:', error);
+        }
+    }
+
+    function generateCharacterGrid() {
+        charGrid.innerHTML = '';
+        lowercaseChars.forEach(char => {
+            const cell = document.createElement('div');
+            cell.className = 'char-cell';
+            cell.textContent = char;
+            cell.addEventListener('click', () => openCharacterDetail(char));
+            charGrid.appendChild(cell);
+        });
+    }
+
+    // --- REUSABLE DRAG LOGIC ---
+    function makeDraggable(windowEl) {
+        const handle = windowEl.querySelector('.drag-handle');
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        let isDragging = false;
+
+        const onMouseMove = (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            windowEl.style.top = (windowEl.offsetTop - pos2) + "px";
+            windowEl.style.left = (windowEl.offsetLeft - pos1) + "px";
+        };
+
+        const onMouseUp = () => {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        };
+
+        handle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            isDragging = true;
+            // Bring clicked window to front
+            const allWindows = document.querySelectorAll('.window, .detail-window');
+            allWindows.forEach(w => w.style.zIndex = '5');
+            windowEl.style.zIndex = ++highestZIndex;
+
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+    }
+
+    // Apply dragging to main window
+    makeDraggable(document.getElementById('mainWindow'));
+
+    // --- RENDER GLYPH WITH VECTOR POINTS ---
+    function renderGlyph(char, canvasElement) {
+        if (!fontData) {
+            console.error('Font not loaded');
+            return;
+        }
+
+        const ctx = canvasElement.getContext('2d');
+        const canvasWidth = canvasElement.width;
+        const canvasHeight = canvasElement.height;
+        
+        // Clear canvas
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.strokeStyle = '#999';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(0, 0, canvasWidth, canvasHeight);
+
+        const glyph = fontData.charToGlyph(char);
+        if (!glyph || !glyph.path) {
+            console.error('Glyph not found');
+            return;
+        }
+
+        const path = glyph.path;
+        const unitsPerEm = fontData.unitsPerEm;
+        const scale = 500 / unitsPerEm;
+        
+        // Calculate bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        
+        for (let cmd of path.commands) {
+            if (cmd.x !== undefined) {
+                minX = Math.min(minX, cmd.x);
+                maxX = Math.max(maxX, cmd.x);
+            }
+            if (cmd.y !== undefined) {
+                minY = Math.min(minY, cmd.y);
+                maxY = Math.max(maxY, cmd.y);
+            }
+        }
+
+        const glyphWidth = (maxX - minX) * scale;
+        const glyphHeight = (maxY - minY) * scale;
+        const offsetX = (canvasWidth - glyphWidth) / 2 - minX * scale;
+        const offsetY = (canvasHeight + glyphHeight) / 2 + minY * scale;
+
+        // Draw grid
+        ctx.strokeStyle = 'rgba(200, 200, 200, 0.2)';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < canvasWidth; i += 30) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, canvasHeight);
+            ctx.stroke();
+        }
+        for (let i = 0; i < canvasHeight; i += 30) {
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(canvasWidth, i);
+            ctx.stroke();
+        }
+
+        // Draw glyph outline
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+
+        let x = 0, y = 0;
+        for (let cmd of path.commands) {
+            const newX = cmd.x * scale + offsetX;
+            const newY = -cmd.y * scale + offsetY;
+
+            if (cmd.type === 'M') {
+                ctx.beginPath();
+                ctx.moveTo(newX, newY);
+                x = newX;
+                y = newY;
+            } else if (cmd.type === 'L') {
+                ctx.lineTo(newX, newY);
+                x = newX;
+                y = newY;
+            } else if (cmd.type === 'Q') {
+                const cp1x = cmd.x1 * scale + offsetX;
+                const cp1y = -cmd.y1 * scale + offsetY;
+                ctx.quadraticCurveTo(cp1x, cp1y, newX, newY);
+                x = newX;
+                y = newY;
+            } else if (cmd.type === 'C') {
+                const cp1x = cmd.x1 * scale + offsetX;
+                const cp1y = -cmd.y1 * scale + offsetY;
+                const cp2x = cmd.x2 * scale + offsetX;
+                const cp2y = -cmd.y2 * scale + offsetY;
+                ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, newX, newY);
+                x = newX;
+                y = newY;
+            } else if (cmd.type === 'Z') {
+                ctx.closePath();
+            }
+        }
+        ctx.stroke();
+
+        // Draw vector points
+        ctx.fillStyle = '#ff0000';
+        ctx.strokeStyle = '#8b0000';
+        ctx.lineWidth = 1;
+        
+        for (let cmd of path.commands) {
+            if (cmd.type !== 'Z') {
+                // On-curve points (end points)
+                if (cmd.x !== undefined && cmd.y !== undefined) {
+                    const px = cmd.x * scale + offsetX;
+                    const py = -cmd.y * scale + offsetY;
+                    ctx.beginPath();
+                    ctx.arc(px, py, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                
+                // Control points for quadratic curves
+                if (cmd.type === 'Q' && cmd.x1 !== undefined && cmd.y1 !== undefined) {
+                    const cpx = cmd.x1 * scale + offsetX;
+                    const cpy = -cmd.y1 * scale + offsetY;
+                    ctx.fillStyle = '#0066ff';
+                    ctx.strokeStyle = '#003d99';
+                    ctx.beginPath();
+                    ctx.arc(cpx, cpy, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.fillStyle = '#ff0000';
+                    ctx.strokeStyle = '#8b0000';
+                }
+                
+                // Control points for cubic curves
+                if (cmd.type === 'C' && cmd.x1 !== undefined && cmd.y1 !== undefined) {
+                    const cp1x = cmd.x1 * scale + offsetX;
+                    const cp1y = -cmd.y1 * scale + offsetY;
+                    const cp2x = cmd.x2 * scale + offsetX;
+                    const cp2y = -cmd.y2 * scale + offsetY;
+                    
+                    ctx.fillStyle = '#0066ff';
+                    ctx.strokeStyle = '#003d99';
+                    ctx.beginPath();
+                    ctx.arc(cp1x, cp1y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.arc(cp2x, cp2y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#ff0000';
+                    ctx.strokeStyle = '#8b0000';
+                }
+            }
+        }
+    }
+
+    // --- CHARACTER DETAIL VIEW ---
+    function openCharacterDetail(char) {
+        const detailWindow = document.createElement('div');
+        detailWindow.className = 'detail-window';
+        detailWindow.style.top = (50 + detailWindowCount * 20) + 'px';
+        detailWindow.style.left = (80 + detailWindowCount * 20) + 'px';
+        detailWindow.style.zIndex = ++highestZIndex;
+        
+        detailWindowCount++;
+
+        const titleBar = document.createElement('div');
+        titleBar.className = 'title-bar drag-handle';
+        
+        const titleContent = document.createElement('div');
+        titleContent.className = 'title-content';
+        
+        const dots = document.createElement('div');
+        dots.className = 'dots';
+        dots.innerHTML = `
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        `;
+        
+        const titleText = document.createElement('span');
+        titleText.style.fontSize = '12px';
+        titleText.style.color = '#666';
+        titleText.textContent = `Character: "${char}"`;
+        
+        titleContent.appendChild(dots);
+        titleContent.appendChild(titleText);
+        
+        const closeBtn = document.createElement('span');
+        closeBtn.className = 'close-btn';
+        closeBtn.textContent = '×';
+        closeBtn.addEventListener('click', () => detailWindow.remove());
+        
+        titleBar.appendChild(titleContent);
+        titleBar.appendChild(closeBtn);
+
+        const detailContent = document.createElement('div');
+        detailContent.className = 'detail-content';
+        
+        // Create canvas container with actual canvas element
+        const canvasContainer = document.createElement('div');
+        canvasContainer.className = 'char-detail-canvas';
+        
+        const canvas = document.createElement('canvas');
+        canvas.id = 'glyph-canvas';
+        canvas.width = 650;
+        canvas.height = 650;
+        
+        canvasContainer.appendChild(canvas);
+        detailContent.appendChild(canvasContainer);
+        
+        // Info panel
+        const charCode = char.charCodeAt(0);
+        const info = document.createElement('div');
+        info.className = 'detail-info';
+        info.innerHTML = `
+            <strong>${char}</strong><br>
+            Unicode: U+${charCode.toString(16).toUpperCase().padStart(4, '0')}<br>
+            Code: ${charCode}<br>
+            <small>Red = On-Curve Points | Blue = Control Points</small>
+        `;
+        
+        detailContent.appendChild(info);
+
+        detailWindow.appendChild(titleBar);
+        detailWindow.appendChild(detailContent);
+        document.body.appendChild(detailWindow);
+        
+        // Render the glyph
+        renderGlyph(char, canvas);
+        
+        // Make detail window draggable
+        makeDraggable(detailWindow);
+    }
+
+    // Initialize on load
+    window.addEventListener('load', async () => {
+        await loadFont();
+        generateCharacterGrid();
+    });
+</script>
+
+</body>
+</html>
