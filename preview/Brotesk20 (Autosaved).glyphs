@@ -1,5 +1,6 @@
 {
 .appVersion = "3306";
+.storedFileType = com.schriftgestaltung.glyphs;
 .formatVersion = 3;
 DisplayStrings = (
 ".",
@@ -8919,85 +8920,6 @@ width = 200;
 }
 );
 unicode = 32;
-},
-{
-glyphname = .notdef;
-lastChange = "2026-05-16 21:59:37 +0000";
-layers = (
-{
-hints = (
-{
-horizontal = 1;
-place = (577,73);
-type = Stem;
-},
-{
-horizontal = 1;
-place = (0,73);
-type = Stem;
-},
-{
-place = (530,76);
-type = Stem;
-},
-{
-place = (98,76);
-type = Stem;
-}
-);
-layerId = m01;
-shapes = (
-{
-closed = 1;
-nodes = (
-(549,643,l),
-(549,4,l),
-(36,4,l),
-(36,643,l)
-);
-},
-{
-pos = (88,372);
-ref = D;
-scale = (0.1766,0.1766);
-},
-{
-pos = (208,371);
-ref = R;
-scale = (0.1762,0.1762);
-},
-{
-pos = (325,372);
-ref = A;
-scale = (0.1744,0.1744);
-},
-{
-pos = (80,198);
-ref = G;
-scale = (0.1732,0.1732);
-},
-{
-pos = (208,198);
-ref = A;
-scale = (0.1744,0.1744);
-},
-{
-pos = (329,195);
-ref = Scaron;
-scale = (0.176,0.176);
-},
-{
-pos = (416,196);
-ref = period;
-scale = (0.1967,0.1967);
-}
-);
-width = 600;
-}
-);
-metricLeft = x;
-metricRight = x;
-note = .notdef;
 },
 {
 glyphname = period;
